@@ -12,13 +12,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static org.modelmapper.Converters.Collection.map;
 
 @Service
 public class CategoryService {
@@ -49,7 +44,7 @@ public class CategoryService {
     public CategoryDTO save(CategoryDTO categoryDTO) {
 
         CategoryModel categoryModel = new CategoryModel();
-        categoryModel.setName(categoryDTO.name());
+        categoryModel.setName(categoryDTO.getName());
         CategoryModel savedModel = repository.save(categoryModel);
         return new CategoryDTO(savedModel.getId(), savedModel.getName());
     }
@@ -59,7 +54,7 @@ public class CategoryService {
 
         try{
             CategoryModel categoryModel = repository.getReferenceById(id);
-            categoryModel.setName(categoryDTO.name());
+            categoryModel.setName(categoryDTO.getName());
             categoryModel = repository.save(categoryModel);
             return new CategoryDTO(categoryModel.getId(), categoryModel.getName());
         } catch (EntityNotFoundException e) {
