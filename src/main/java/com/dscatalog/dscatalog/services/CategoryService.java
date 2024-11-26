@@ -1,11 +1,14 @@
 package com.dscatalog.dscatalog.services;
 
 import com.dscatalog.dscatalog.dtos.CategoryDTO;
+import com.dscatalog.dscatalog.exceptions.DatabaseException;
 import com.dscatalog.dscatalog.exceptions.EntityNotFoundException;
 import com.dscatalog.dscatalog.models.CategoryModel;
 import com.dscatalog.dscatalog.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -62,5 +65,19 @@ public class CategoryService {
             throw new EntityNotFoundException("Id not found" + id);
         }
 
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void delete(Long id) {
+
+        if(!repository.existsById(id)){
+            throw new EntityNotFoundException("Entity not found");
+        }
+
+        try {
+            repository.deleteById(id);
+        }catch (DataIntegrityViolationException e){
+            throw new DatabaseException("Integrity violation");
+        }
     }
 }
