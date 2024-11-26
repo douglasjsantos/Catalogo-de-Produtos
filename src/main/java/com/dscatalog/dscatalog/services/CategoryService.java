@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +23,9 @@ public class CategoryService {
     private CategoryRepository repository;
 
     @Transactional(readOnly = true)
-    public Page<CategoryDTO> listAllPaged(PageRequest pageRequest){
+    public Page<CategoryDTO> listAllPaged(Pageable pageable){
 
-        Page<CategoryModel> categoryList = repository.findAll(pageRequest);
+        Page<CategoryModel> categoryList = repository.findAll(pageable);
 
         return categoryList.map(categoryModel -> new CategoryDTO(categoryModel.getId(), categoryModel.getName()));
     }
