@@ -1,9 +1,12 @@
 package com.dscatalog.dscatalog.services;
 
+import com.dscatalog.dscatalog.dtos.CategoryDTO;
 import com.dscatalog.dscatalog.dtos.ProductDTO;
 import com.dscatalog.dscatalog.exceptions.DatabaseException;
 import com.dscatalog.dscatalog.exceptions.EntityNotFoundException;
+import com.dscatalog.dscatalog.models.CategoryModel;
 import com.dscatalog.dscatalog.models.ProductModel;
+import com.dscatalog.dscatalog.repositories.CategoryRepository;
 import com.dscatalog.dscatalog.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -21,12 +24,16 @@ public class ProductService {
     @Autowired
     private ProductRepository repository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+
     @Transactional(readOnly = true)
     public Page<ProductDTO> listAllPaged(PageRequest pageRequest){
 
         Page<ProductModel> productList = repository.findAll(pageRequest);
 
-        return productList.map(x -> new ProductDTO());
+        return productList.map(x -> new ProductDTO(x));
     }
 
     @Transactional(readOnly = true)
@@ -42,10 +49,23 @@ public class ProductService {
     @Transactional
     public ProductDTO save(ProductDTO productDTO) {
 
-        ProductModel ProductModel = new ProductModel();
-        ProductModel.setName(productDTO.getName());
-        ProductModel savedModel = repository.save(ProductModel);
-        return new ProductDTO(savedModel);
+        ProductModel productModel = new ProductModel();
+        productModel.setName(productDTO.getName());
+        productModel.setDescription(productDTO.getDescription());
+        productModel.setDate(productDTO.getDate());
+        productModel.setPrice(productDTO.getPrice());
+        productModel.setImgUrl(productDTO.getImgUrl());
+
+        productDTO.getCategories().forEach(catDTO -> {
+            CategoryModel category = categoryRepository.findById(catDTO.getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Category not found: " + catDTO.getId()));
+            productModel.getCategories().add(category);
+        });
+
+        ProductModel savedModel = repository.save(productModel);
+
+        return new ProductDTO(savedModel, savedModel.getCategories());
+
     }
 
     @Transactional
@@ -54,6 +74,10 @@ public class ProductService {
         try{
             ProductModel productModel = repository.getReferenceById(id);
             productModel.setName(productDTO.getName());
+            productModel.setDescription(productDTO.getDescription());
+            productModel.setDate(productDTO.getDate());
+            productModel.setPrice(productDTO.getPrice());
+            productModel.setImgUrl(productDTO.getImgUrl());
             productModel = repository.save(productModel);
             return new ProductDTO(productModel);
         } catch (EntityNotFoundException e) {
