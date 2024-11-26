@@ -7,13 +7,18 @@ import com.dscatalog.dscatalog.models.CategoryModel;
 import com.dscatalog.dscatalog.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static org.modelmapper.Converters.Collection.map;
 
 @Service
 public class CategoryService {
@@ -22,15 +27,11 @@ public class CategoryService {
     private CategoryRepository repository;
 
     @Transactional(readOnly = true)
-    public List<CategoryDTO> listAll(){
+    public Page<CategoryDTO> listAllPaged(PageRequest pageRequest){
 
-        List<CategoryModel> categoryList = repository.findAll();
+        Page<CategoryModel> categoryList = repository.findAll(pageRequest);
 
-        return categoryList.stream()
-                .map(category -> new CategoryDTO(category.getId(), category.getName())).collect(Collectors.toList());
-
-
-
+        return categoryList.map(categoryModel -> new CategoryDTO(categoryModel.getId(), categoryModel.getName()));
     }
 
     @Transactional(readOnly = true)
@@ -80,4 +81,6 @@ public class CategoryService {
             throw new DatabaseException("Integrity violation");
         }
     }
+
+
 }
