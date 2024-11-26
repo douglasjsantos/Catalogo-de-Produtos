@@ -41,4 +41,16 @@ public class CategoryService {
 
 
     }
+
+    public CategoryDTO save(CategoryDTO categoryDTO) {
+
+        CategoryModel categoryModel = new CategoryModel();
+        categoryModel.setName(categoryDTO.name());
+
+        CategoryModel savedModel = categoryRepository.save(categoryModel);
+
+        return new CategoryDTO(savedModel.getId(), savedModel.getName());
+
+
+    }
 }
