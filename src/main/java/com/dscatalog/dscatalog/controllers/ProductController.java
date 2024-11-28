@@ -25,7 +25,6 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<Page<ProductDTO>> listAll(Pageable pageable){
 
-
         Page<ProductDTO> list = ProductService.listAllPaged(pageable);
         return ResponseEntity.ok().body(list);
     }
@@ -39,8 +38,8 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductDTO> save(@RequestBody ProductDTO ProductDTO){
-        ProductDTO = ProductService.save(ProductDTO);
 
+        ProductDTO = ProductService.save(ProductDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(ProductDTO.getId()).toUri();
 
@@ -58,7 +57,6 @@ public class ProductController {
     public ResponseEntity<Void> delete(@PathVariable Long id){
 
         ProductService.delete(id);
-
         return ResponseEntity.noContent().build();
     }
 

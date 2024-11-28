@@ -38,7 +38,6 @@ public class CategoryService {
 
         return new CategoryDTO(entity.getId(), entity.getName());
 
-
     }
 
     @Transactional
