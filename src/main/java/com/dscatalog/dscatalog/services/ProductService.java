@@ -93,9 +93,9 @@ public class ProductService {
         if(!repository.existsById(id)){
             throw new EntityNotFoundException("Entity not found");
         }
-
         try {
             repository.deleteById(id);
+
         }catch (DataIntegrityViolationException e){
             throw new DatabaseException("Integrity violation");
         }
