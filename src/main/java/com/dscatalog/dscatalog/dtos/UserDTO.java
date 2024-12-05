@@ -2,6 +2,10 @@ package com.dscatalog.dscatalog.dtos;
 
 import com.dscatalog.dscatalog.models.RoleModel;
 import com.dscatalog.dscatalog.models.UserModel;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import javax.management.relation.Role;
 import java.util.HashSet;
@@ -11,8 +15,12 @@ import java.util.Set;
 public class UserDTO {
 
     private Long id;
+
+    @NotBlank(message = "Campo obrigatório.")
     private String firstName;
     private String lastName;
+
+    @Email(message = "Favor entrar com e-mail valido.")
     private String email;
 
     private Set<RoleDTO> roles = new HashSet<>();

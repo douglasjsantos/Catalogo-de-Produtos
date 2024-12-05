@@ -2,6 +2,7 @@ package com.dscatalog.dscatalog.controllers;
 
 import com.dscatalog.dscatalog.dtos.ProductDTO;
 import com.dscatalog.dscatalog.services.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,7 +38,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> save(@RequestBody ProductDTO ProductDTO){
+    public ResponseEntity<ProductDTO> save(@Valid @RequestBody ProductDTO ProductDTO){
 
         ProductDTO = ProductService.save(ProductDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -47,7 +48,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO ProductDTO){
+    public ResponseEntity<ProductDTO> update(@PathVariable Long id,@Valid @RequestBody ProductDTO ProductDTO){
 
         ProductDTO = ProductService.update(id, ProductDTO);
         return ResponseEntity.ok().body(ProductDTO);
