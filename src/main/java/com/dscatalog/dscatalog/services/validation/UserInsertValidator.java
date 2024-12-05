@@ -24,7 +24,6 @@ public class UserInsertValidator implements ConstraintValidator<UserInsertValid,
     public boolean isValid(UserInsertDTO dto, ConstraintValidatorContext context) {
 
 
-
         List<FieldMessage> list = new ArrayList<>();
 
         UserModel userModel = userRepository.findByEmail(dto.getEmail());

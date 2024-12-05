@@ -1,5 +1,6 @@
 package com.dscatalog.dscatalog.services;
 
+import com.dscatalog.dscatalog.dtos.RoleDTO;
 import com.dscatalog.dscatalog.dtos.UserDTO;
 import com.dscatalog.dscatalog.dtos.UserInsertDTO;
 import com.dscatalog.dscatalog.exceptions.DatabaseException;
@@ -28,6 +29,7 @@ public class UserService {
 
     @Autowired
     private UserRepository repository;
+
 
     @Transactional(readOnly = true)
     public Page<UserDTO> listAllPaged(Pageable pageable){
