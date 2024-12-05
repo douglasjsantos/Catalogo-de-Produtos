@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "TB_CATEGORY")
@@ -22,6 +24,7 @@ public class CategoryModel implements Serializable {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant updatedAt;
 
+    private Set<ProductModel> producs = new HashSet<>();
     public CategoryModel() {
     }
 
@@ -63,6 +66,12 @@ public class CategoryModel implements Serializable {
     public void preUpdate(){
         updatedAt = Instant.now();
     }
+
+    @ManyToMany(mappedBy = "categories")
+    public Set<ProductModel> getProducs() {
+        return producs;
+    }
+
 
     @Override
     public boolean equals(Object o) {
