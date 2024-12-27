@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -31,6 +32,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<Page<UserDTO>> listAll(Pageable pageable){
 
         Page<UserDTO> list = userService.listAllPaged(pageable);
@@ -38,6 +40,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<UserDTO> findById(@PathVariable Long id){
 
         UserDTO dto = userService.findById(id);
@@ -45,6 +48,7 @@ public class UserController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<UserDTO> save(@Valid @RequestBody UserInsertDTO dto) {
         UserDTO newDto = userService.save(dto);
 
@@ -55,6 +59,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<UserDTO> update(@PathVariable Long id,@Valid @RequestBody UserDTO userDTO){
 
         userDTO = userService.update(id, userDTO);
@@ -62,6 +67,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id){
 
         userService.delete(id);

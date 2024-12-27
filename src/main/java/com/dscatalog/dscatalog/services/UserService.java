@@ -8,24 +8,32 @@ import com.dscatalog.dscatalog.exceptions.EntityNotFoundException;
 import com.dscatalog.dscatalog.models.CategoryModel;
 import com.dscatalog.dscatalog.models.RoleModel;
 import com.dscatalog.dscatalog.models.UserModel;
+import com.dscatalog.dscatalog.projections.UserDetailsProjection;
 import com.dscatalog.dscatalog.repositories.CategoryRepository;
 import com.dscatalog.dscatalog.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Role;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserRepository repository;
@@ -102,5 +110,21 @@ public class UserService {
         }
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
+        List<UserDetailsProjection> result = repository.searchUserAndRolesByEmail(username);
+        if (result.isEmpty()) {
+            throw new UsernameNotFoundException("Email not found");
+        }
+
+        UserModel user = new UserModel();
+        user.setEmail(result.get(0).getUsername());
+        user.setPassword(result.get(0).getPassword());
+        for(UserDetailsProjection projection : result){
+            user.addRole(new RoleModel(projection.getRoleId(), projection.getAuthority()));
+        }
+
+        return user;
+    }
 }
