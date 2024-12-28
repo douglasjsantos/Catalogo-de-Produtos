@@ -1,5 +1,6 @@
 package com.dscatalog.dscatalog.models;
 
+import com.dscatalog.dscatalog.projections.IdProjection;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -10,7 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "TB_PRODUCT")
-public class ProductModel implements Serializable {
+public class ProductModel implements IdProjection<Long>,Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

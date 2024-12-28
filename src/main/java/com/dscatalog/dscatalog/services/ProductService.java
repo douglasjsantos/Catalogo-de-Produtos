@@ -6,17 +6,23 @@ import com.dscatalog.dscatalog.exceptions.DatabaseException;
 import com.dscatalog.dscatalog.exceptions.EntityNotFoundException;
 import com.dscatalog.dscatalog.models.CategoryModel;
 import com.dscatalog.dscatalog.models.ProductModel;
+import com.dscatalog.dscatalog.projections.ProductProjection;
 import com.dscatalog.dscatalog.repositories.CategoryRepository;
 import com.dscatalog.dscatalog.repositories.ProductRepository;
+import com.dscatalog.dscatalog.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -102,4 +108,25 @@ public class ProductService {
     }
 
 
+    @Transactional(readOnly = true)
+    @SuppressWarnings("unchecked")
+    public Page<ProductDTO> findAllPaged(String name, String categoryId, Pageable pageable) {
+
+
+        List<Long> categoryIds = Arrays.asList();
+        if(!"0".equals(categoryId)){
+            categoryIds = Arrays.asList(categoryId.split(",")).stream().map(Long::parseLong).toList();
+        }
+
+        Page<ProductProjection> page = repository.searchProducts(categoryIds, name, pageable);
+        List<Long> productIds = page.map(x -> x.getId()).toList();
+
+        List<ProductModel> entities = repository.searchProductsWithCategories(productIds);
+        entities = (List<ProductModel>) Utils.replace(page.getContent(), entities);
+
+        List<ProductDTO> dtos = entities.stream().map(p -> new ProductDTO(p, p.getCategories())).toList();
+
+
+        return new PageImpl<>(dtos,page.getPageable(),page.getTotalPages());
+    }
 }

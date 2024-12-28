@@ -10,6 +10,7 @@ import com.dscatalog.dscatalog.models.RoleModel;
 import com.dscatalog.dscatalog.models.UserModel;
 import com.dscatalog.dscatalog.projections.UserDetailsProjection;
 import com.dscatalog.dscatalog.repositories.CategoryRepository;
+import com.dscatalog.dscatalog.repositories.RoleRepository;
 import com.dscatalog.dscatalog.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Role;
@@ -38,6 +39,8 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository repository;
 
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Transactional(readOnly = true)
     public Page<UserDTO> listAllPaged(Pageable pageable){
@@ -65,7 +68,20 @@ public class UserService implements UserDetailsService {
         userModel.setEmail(userInsertDTO.getEmail());
         userModel.setPassword(passwordEncoder.encode(userInsertDTO.getPassword()));
 
-        // Adicionar roles ao usuário
+        // Verificar se a role "role_operator" já existe no banco
+        RoleModel roleOperator = roleRepository.findByAuthority("ROLE_OPERATOR");
+
+        // Se não existir, cria a role e salva no banco
+        if (roleOperator == null) {
+            roleOperator = new RoleModel();
+            roleOperator.setAuthority("ROLE_OPERATOR");
+            roleRepository.save(roleOperator);
+        }
+
+        // Adicionar a role ao usuário
+        userModel.getRoles().add(roleOperator);
+
+        // Adicionar roles do DTO ao usuário
         userInsertDTO.getRoles().forEach(roleDto -> {
             RoleModel role = new RoleModel();
             role.setId(roleDto.getId());
@@ -76,6 +92,7 @@ public class UserService implements UserDetailsService {
         UserModel savedModel = repository.save(userModel);
         return new UserDTO(savedModel);
     }
+
 
 
     @Transactional
