@@ -24,9 +24,15 @@ public class CategoryModel implements Serializable {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant updatedAt;
 
-    private Set<ProductModel> producs = new HashSet<>();
-    public CategoryModel() {
-    }
+    @ManyToMany
+    @JoinTable(
+            name = "TB_CATEGORY_PRODUCT",
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private Set<ProductModel> products = new HashSet<>();
+
+    public CategoryModel() {}
 
     public CategoryModel(Long id, String name) {
         this.id = id;
@@ -58,20 +64,22 @@ public class CategoryModel implements Serializable {
     }
 
     @PrePersist
-    public void prePersist(){
+    public void prePersist() {
         createdAt = Instant.now();
     }
 
     @PreUpdate
-    public void preUpdate(){
+    public void preUpdate() {
         updatedAt = Instant.now();
     }
 
-    @ManyToMany(mappedBy = "categories")
-    public Set<ProductModel> getProducs() {
-        return producs;
+    public Set<ProductModel> getProducts() {
+        return products;
     }
 
+    public void setProducts(Set<ProductModel> products) {
+        this.products = products;
+    }
 
     @Override
     public boolean equals(Object o) {
