@@ -9,8 +9,7 @@ Este é uma API em Spring Boot para gerenciar um catálogo de produtos. A aplica
 - 🌐 Endpoints
 - ↔️ Exemplo de Requisições
 
-
-
+ 
 
 ## 🛠️ Tecnologias:
 - Java 17
@@ -22,3 +21,5 @@ Este é uma API em Spring Boot para gerenciar um catálogo de produtos. A aplica
 - Maven
 - PostgreSQL
 - JUnit
+
+## Instalação
