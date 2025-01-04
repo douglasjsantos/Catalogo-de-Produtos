@@ -1,6 +1,7 @@
 package com.dscatalog.dscatalog.services;
 
 import com.dscatalog.dscatalog.dtos.EmailDTO;
+import com.dscatalog.dscatalog.dtos.NewPasswordDTO;
 import com.dscatalog.dscatalog.exceptions.EntityNotFoundException;
 import com.dscatalog.dscatalog.models.PasswordRecover;
 import com.dscatalog.dscatalog.models.UserModel;
@@ -10,10 +11,12 @@ import jakarta.persistence.Transient;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -34,7 +37,8 @@ public class AuthService {
     @Autowired
     private EmailService emailService;
 
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Transactional
     public void createRecoverToken(EmailDTO body) {
@@ -59,4 +63,17 @@ public class AuthService {
         emailService.sendEmail(body.getEmail(), "Recuperação de senha", text);
     }
 
+    @Transactional
+    public void saveNewPassword(NewPasswordDTO body) {
+
+        List<PasswordRecover> result = passwordRecoverRepository.searchValidTokens(body.getToken(), Instant.now());
+        if(result.isEmpty()){
+            throw new jakarta.persistence.EntityNotFoundException("Token inválido");
+        }
+
+        UserModel userModel = userRepository.findByEmail(result.get(0).getEmail());
+        userModel.setPassword(passwordEncoder.encode(body.getPassword()));
+        userModel = userRepository.save(userModel);
+
+    }
 }
