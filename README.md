@@ -4,10 +4,10 @@ Este é uma API em Spring Boot para gerenciar um catálogo de produtos. A aplica
 
 
 ## 📚 Sumário
-- 🛠️ [Tecnologias](#tecnologias)
-- 🚀 [Instalação](#instalação)
-- 🌐 [Endpoints](#endpoints)
-- ↔️ [Exemplo de Requisições](#requisicoes)
+- [Tecnologias](#tecnologias)
+- [Instalação](#instalação)
+- [Endpoints](#endpoints)
+- [Exemplo de Requisições](#requisicoes)
 
 
 ## 🛠️ Tecnologias: <a id="tecnologias"></a>
