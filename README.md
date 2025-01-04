@@ -21,3 +21,8 @@ Este é uma API em Spring Boot para gerenciar um catálogo de produtos. A aplica
 - PostgreSQL
 - JUnit
 
+## 🚀 Instalação:
+```java
+git clone https://github.com/douglasjsantos/ds-catalog
+cd ds-catalog
+```
