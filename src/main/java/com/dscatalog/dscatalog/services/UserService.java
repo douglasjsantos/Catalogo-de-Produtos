@@ -42,6 +42,9 @@ public class UserService implements UserDetailsService {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private AuthService authService;
+
     @Transactional(readOnly = true)
     public Page<UserDTO> listAllPaged(Pageable pageable){
 
@@ -143,5 +146,15 @@ public class UserService implements UserDetailsService {
         }
 
         return user;
+    }
+
+    @Transactional(readOnly = true)
+    public UserDTO findMe(){
+
+        UserModel entity = authService.authenticated();
+
+
+        return new UserDTO(entity);
+
     }
 }

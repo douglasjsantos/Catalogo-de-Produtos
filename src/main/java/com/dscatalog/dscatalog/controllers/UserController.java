@@ -73,5 +73,11 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/me")
+    @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_ADMIN')")
+    public ResponseEntity<UserDTO> findMe(){
 
+        UserDTO dto = userService.findMe();
+        return ResponseEntity.ok().body(dto);
+    }
 }
