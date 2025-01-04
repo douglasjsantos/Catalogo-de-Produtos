@@ -69,7 +69,7 @@ cd ds-catalog
 | GET | `/users/me` | Recupera os detalhes do usuário autenticado. | ROLE_ADMIN, ROLE_OPERATOR |
 
 
-## Products
+## Produtos
 
 **Caminho Base:** `/products`     
 
