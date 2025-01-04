@@ -11,7 +11,11 @@ Este é uma API em Spring Boot para gerenciar um catálogo de produtos. A aplica
 
  
 
-## 🛠️ Tecnologias:
+## 🛠️ Tecnologias: <a id="tecnologias"></a>
+- Java 17
+- Spring Boot
+- Spring Security
+
 - Java 17
 - Spring Boot
 - Spring Security
