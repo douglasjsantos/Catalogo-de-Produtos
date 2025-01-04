@@ -5,7 +5,7 @@ Este é uma API em Spring Boot para gerenciar um catálogo de produtos. A aplica
 
 ## 📚 Sumário
 - 🛠️ [Tecnologias](#tecnologias)
-- 🚀 Instalação
+- 🚀 [Instalação](#instalação)
 - 🌐 Endpoints
 - ↔️ Exemplo de Requisições
 
@@ -21,7 +21,7 @@ Este é uma API em Spring Boot para gerenciar um catálogo de produtos. A aplica
 - PostgreSQL
 - JUnit
 
-## 🚀 Instalação:
+## 🚀 Instalação: <a id="instalação"></a>
 ```java
 git clone https://github.com/douglasjsantos/ds-catalog
 cd ds-catalog
