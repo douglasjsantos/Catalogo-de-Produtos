@@ -80,3 +80,71 @@ cd ds-catalog
 | GET | `/products/{id}` | Recupera os detalhes de um produto pelo ID. | Autenticado |
 | PUT | `/products/{id}` | Atualiza um produto existente pelo ID. | ROLE_ADMIN |
 | DELETE | `/products/{id}` | Exclui um produto pelo ID | ROLE_ADMIN, ROLE_OPERATOR |
+
+
+## ↔️ Exemplos de Requisição: <a id="requisicoes"></a>
+
+Criando um novo usuário:
+
+```jsx
+{
+    "firstName": "Douglas",
+    "lastName": "Santos",
+    "email": "douglas_j.santos@hotmail.com",
+    "password": "12345678",
+    "roles": [
+        {
+            "id": 1,
+            "authority": "ROLE_OPERATOR"
+        },
+        {
+            "id": 2,
+            "authority": "ROLE_ADMIN"
+        }
+        
+    ]
+}
+```
+## Login com o usuário:
+
+Basic Auth: 
+
+`{{client-id}}` = myclientid
+
+`{{client-secret}}` = myclientsecret
+
+Body:
+
+Método x-www-form-urlencoded
+
+username = douglas_j.santos@hotmail.com
+
+password = 12345678
+
+grant_type = password
+
+
+Criando uma nova categoria:
+
+```jsx
+{
+	"name" : "category 1"
+}
+```
+
+Criando um produto:
+
+```jsx
+{
+    "name": "Playstation 5",
+    "description": "A powerful videogame",
+    "price": 699.99,
+    "imgUrl": "https://example.com/smartphone.jpg",
+    "date": "2024-11-25T10:00:00Z",
+    "categories": [
+        {"id": 2},
+        {"id": 3}
+    ]
+}
+
+```
