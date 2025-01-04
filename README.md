@@ -4,7 +4,7 @@ Este é uma API em Spring Boot para gerenciar um catálogo de produtos. A aplica
 
 
 ## Índice
-- 🛠️ Tecnologias
+- 🛠️ [Tecnologias](./)
 - 🚀 Instalação
 - 🌐 Endpoints
 - ↔️ Exemplo de Requisições
@@ -12,7 +12,7 @@ Este é uma API em Spring Boot para gerenciar um catálogo de produtos. A aplica
 This site was built using [GitHub Pages](https://pages.github.com/).
 
 
-🛠️ Tecnologias Utilizadas:
+🛠️ Tecnologias:
 - Java 17
 - Spring Boot
 - Spring Security
