@@ -4,13 +4,13 @@ Este é uma API em Spring Boot para gerenciar um catálogo de produtos. A aplica
 
 
 ## 📚 Sumário
-- 🛠️ Tecnologias <a id="tecnologias"></a>
+- 🛠️ [Tecnologias](#tecnologias)
 - 🚀 Instalação
 - 🌐 Endpoints
 - ↔️ Exemplo de Requisições
 
 
-## 🛠️ Tecnologias
+## 🛠️ Tecnologias: <a id="tecnologias"></a>
 - Java 17
 - Spring Boot
 - Hibernate
